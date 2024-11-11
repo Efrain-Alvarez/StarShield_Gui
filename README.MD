@@ -9,8 +9,8 @@ To clone the repository to your local machine, follow these steps:
 
 ## Set up your virtual enviroment (optional)
 ### Make sure you have python and pip installed:
-python3 --version
-pip3 --version
+python3 --version  
+pip --version  
 
 1. python3 -m venv venv
 2. .\venv\Scripts\activate
