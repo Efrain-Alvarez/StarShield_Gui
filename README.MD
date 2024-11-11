@@ -21,5 +21,8 @@ To install dependencies
 To exit out of Virtual Enviorment
 1. deactivate
 
+## Links to Installer of QT Designer
+https://build-system.fman.io/qt-designer-download  
 
-
+## Troubleshooting 
+PyQt5 is built on Qt, which is coded in C++. PyQt5 is not your standard library that is "native" Python, but it is a plugin that runs partly in C++. This is why your computer needs to have "C++ build tools" installed. Those build tools are installed if you have Visual Studio installed (note: Visual Studio Code is different and does not include the tools), which could be why some instructions skip this step.
