@@ -2,9 +2,12 @@ import sys
 from PyQt5 import QtWidgets as qtw
 from PyQt5 import QtCore as qtc
 from PyQt5 import QtGui as qtg
-from containers import Ui_Form  # Make sure to replace this with the correct import based on your UI file
+from containers import Ui_Form
 
 class MainWindow(qtw.QWidget):
+    # Define a signal that carries all saved data as a dictionary
+    data_saved = qtc.pyqtSignal(dict)
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         
@@ -18,6 +21,7 @@ class MainWindow(qtw.QWidget):
         self.ui.groupBox_2.setStyleSheet("background-color:lightgrey;")
         self.ui.groupBox_3.setStyleSheet("background-color:lightgrey;")
         self.ui.groupBox_4.setStyleSheet("background-color:lightgrey;")
+        
         # Connect the Submit button to save_input method
         self.ui.pushButton.clicked.connect(self.save_input)
         
@@ -35,8 +39,7 @@ class MainWindow(qtw.QWidget):
         self.end_date = None
 
     def save_input(self):
-        """Save the input values only when the submit button is clicked."""
-        # Retrieve the input values from the UI
+        # Retrieve the input values from the UI when the submit button is clicked
         self.ship_number = self.ui.Ship_number.text().strip()
         self.ship_ip = self.ui.Ship_ip.text().strip()
         self.tm_rate = self.ui.TM_rate.text().strip()
@@ -46,7 +49,7 @@ class MainWindow(qtw.QWidget):
         self.start_date = self.ui.Start_data.dateTime().toString()
         self.end_date = self.ui.End_date.dateTime().toString()
 
-        # Validation of inputs
+        # Validation of inputs, checks if == to none or 0
         if not self.ship_number or not self.ship_ip or not self.tm_rate or not self.video_rate:
             self.show_error("Error", "Please fill in all the required fields.")
             return
@@ -66,20 +69,20 @@ class MainWindow(qtw.QWidget):
         if self.is_start_after_end():
             self.show_error("Invalid Dates", "Start date must be before the end date.")
             return
-        
-        # Save the data (this part only happens if all validations pass)
-        print("Saved Data:")
-        print(f"Ship Number: {self.ship_number}")
-        print(f"Ship IP: {self.ship_ip}")
-        print(f"TM Rate: {self.tm_rate}")
-        print(f"Video Rate: {self.video_rate}")
-        print(f"Source Port: {self.source_port}")
-        print(f"Destination Port: {self.des_port}")
-        print(f"Start Date: {self.start_date}")
-        print(f"End Date: {self.end_date}")
+
+        return {
+            "ship_number": self.ship_number,
+            "ship_ip": self.ship_ip,
+            "tm_rate": self.tm_rate,
+            "video_rate": self.video_rate,
+            "source_port": self.source_port,
+            "des_port": self.des_port,
+            "start_date": self.start_date,
+            "end_date": self.end_date
+        }
 
     def show_error(self, title, message):
-        """Display an error message box."""
+        # Displays error message
         error_box = qtw.QMessageBox()
         error_box.setIcon(qtw.QMessageBox.Critical)
         error_box.setWindowTitle(title)
@@ -87,7 +90,7 @@ class MainWindow(qtw.QWidget):
         error_box.exec_()
 
     def is_valid_ip(self, ip):
-        """Check if the IP address is valid."""
+        # Check for a valid IP
         try:
             parts = ip.split(".")
             if len(parts) != 4:
@@ -100,7 +103,7 @@ class MainWindow(qtw.QWidget):
             return False
 
     def is_valid_number(self, value):
-        """Check if the value is a valid number."""
+        # Checks for valid numbers
         try:
             float(value)
             return True
@@ -108,14 +111,14 @@ class MainWindow(qtw.QWidget):
             return False
 
     def is_valid_port(self, port):
-        """Check if the port number is between 1 and 65535."""
+        # Port number should be between 1 and 65535
         if not port.isdigit():
             return False
         port_num = int(port)
         return 1 <= port_num <= 65535
 
     def is_start_after_end(self):
-        """Check if the start date is after the end date."""
+        # Check if the start date is after the end date
         start_date = self.ui.Start_data.dateTime()
         end_date = self.ui.End_date.dateTime()
         return start_date > end_date
@@ -123,4 +126,5 @@ class MainWindow(qtw.QWidget):
 if __name__ == '__main__':
     app = qtw.QApplication(sys.argv)
     w = MainWindow()
-    sys.exit(app.exec_())
+    input_data = w.save_input()
+    sys.exit(app.exec_())    
