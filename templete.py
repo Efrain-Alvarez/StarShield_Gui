@@ -26,8 +26,34 @@ class MainWindow(qtw.QWidget):
         destination_port_input = qtw.QLineEdit()
         #buttons
         submit_button = qtw.QPushButton("Submit")
-        #layout
+        #Main layout
+        main_layout = qtw.QVBoxLayout()
+        container1 = qtw.QWidget()
+        container1_layout = qtw.QVBoxLayout()
+        container1_layout.addWidget(ship_ip_label)
+        container1_layout.addWidget(ship_ip_input)
+        container1.setLayout(container1_layout)
+        main_layout.addWidget(container1)
+        container1.setStyleSheet("""
+            QWidget {
+                border: 2px solid black;
+            }
+        """)
         
+        container2 = qtw.QWidget()
+        container2_layout = qtw.QVBoxLayout()
+        container2_layout.addWidget(ship_hull_label)
+        container2_layout.addWidget(ship_hull_input)
+        container2.setLayout(container2_layout)
+        main_layout.addWidget(container2)
+        container2.setStyleSheet("""
+            QWidget {
+                border: 2px solid black;
+            }
+        """)
+
+        #set layout
+        self.setLayout(main_layout)
         self.show()
 
 
