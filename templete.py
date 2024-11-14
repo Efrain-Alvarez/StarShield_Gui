@@ -27,13 +27,16 @@ class MainWindow(qtw.QWidget):
         #buttons
         submit_button = qtw.QPushButton("Submit")
         #Main layout
-        main_layout = qtw.QVBoxLayout()
+        main_layout = qtw.QGridLayout()
+
         container1 = qtw.QWidget()
-        container1_layout = qtw.QVBoxLayout()
-        container1_layout.addWidget(ship_ip_label)
-        container1_layout.addWidget(ship_ip_input)
+        container1_layout = qtw.QGridLayout()
+        container1_layout.addWidget(ship_ip_label,0,0)
+        container1_layout.addWidget(ship_ip_input,0,1)
+        container1_layout.addWidget(ship_hull_label,1,0)
+        container1_layout.addWidget(ship_hull_input,1,1)
         container1.setLayout(container1_layout)
-        main_layout.addWidget(container1)
+        main_layout.addWidget(container1,0,0)
         container1.setStyleSheet("""
             QWidget {
                 border: 2px solid black;
@@ -41,11 +44,11 @@ class MainWindow(qtw.QWidget):
         """)
         
         container2 = qtw.QWidget()
-        container2_layout = qtw.QVBoxLayout()
-        container2_layout.addWidget(ship_hull_label)
-        container2_layout.addWidget(ship_hull_input)
+        container2_layout = qtw.QFormLayout()
+        container2_layout.addRow("tm rate", tm_rate_input)
+        container2_layout.addRow("video rate", video_rate_input)
         container2.setLayout(container2_layout)
-        main_layout.addWidget(container2)
+        main_layout.addWidget(container2,0,1)
         container2.setStyleSheet("""
             QWidget {
                 border: 2px solid black;
