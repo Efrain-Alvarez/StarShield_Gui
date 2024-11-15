@@ -27,7 +27,7 @@ class MainWindow(qtw.QWidget):
 
         # buttons
         submit_button = qtw.QPushButton("Submit")
-        retrieve_button = qtw.QPushButton("Retrieve Data")
+        #retrieve_button = qtw.QPushButton("Retrieve Data")
 
         # Main layout
         main_layout = qtw.QGridLayout()
@@ -61,7 +61,7 @@ class MainWindow(qtw.QWidget):
         """)
 
         main_layout.addWidget(submit_button, 1, 0, 1, 2)
-        main_layout.addWidget(retrieve_button, 2, 0, 1, 2)
+        #main_layout.addWidget(retrieve_button, 2, 0, 1, 2)
 
         # Set layout
         self.setLayout(main_layout)
@@ -69,7 +69,7 @@ class MainWindow(qtw.QWidget):
 
         # Button functionality
         submit_button.clicked.connect(self.on_submit)
-        retrieve_button.clicked.connect(self.on_retrieve_data)
+        #retrieve_button.clicked.connect(self.retrieve_data)
 
         self.show()
 
@@ -86,6 +86,7 @@ class MainWindow(qtw.QWidget):
         conn = sqlite3.connect('user_input.db')
         cursor = conn.cursor()
 
+        cursor.execute('DROP TABLE IF EXISTS user_input')
         # Create a table if it doesn't exist
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS user_input (
@@ -97,6 +98,7 @@ class MainWindow(qtw.QWidget):
                 destination_port TEXT
             )
         ''')
+
 
         # Insert the user input data into the table
         cursor.execute('''
@@ -110,7 +112,7 @@ class MainWindow(qtw.QWidget):
 
         print("Form Submitted and data saved to database.")
 
-    def on_retrieve_data(self):
+    def retrieve_data(self):
         # Connect to the SQLite database
         conn = sqlite3.connect('user_input.db')
         cursor = conn.cursor()
@@ -129,3 +131,6 @@ if __name__ == '__main__':
     app = qtw.QApplication(sys.argv)
     w = MainWindow()
     app.exec_()
+
+    data = w.retrieve_data()
+    print(data)
